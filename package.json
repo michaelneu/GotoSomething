@@ -1,0 +1,12 @@
+{
+    "devDependencies": {
+        "gulp": "*",
+        "gulp-task-listing": "*",
+        "gulp-clean": "*",
+        "gulp-concat": "*",
+        "gulp-rename": "*",
+        "gulp-uglify": "*",
+        "gulp-qunit": "*",
+        "qunitjs": "*"
+    }
+}

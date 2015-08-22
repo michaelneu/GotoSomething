@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+
+        <script src="../../dist/goto-something.js"></script>
+        <script>
+
+            QUnit.test("Latex - new LatexInterpreter()", function (assert) {
+                var latex = [
+                    // (somewhat) valid latex
+                    "\\chapter{\\textbf{foo}} }",                     // the trailing "}" should be stripped
+                    "other content \\subsubsection{bar} foo",         // should work, although other content is prepended
+                    "\\chapter{foo} \\section{bar} \\paragraph{bar}", // should result in 2 blocks
+
+                    // invalid
+                    "\\subsection{\\textbf{foobar}", // should not appear in the result set
+                    "foobar % \\chapter{foo}",       // chapter is commented out, should not appear either
+
+                    // check for block start-end
+                    "foo",
+                    "bar",
+                    "foobar",
+                    "\\chapter{foobar}",
+                    "foo",
+                    "bar",
+                    "\\chapter{bar}"
+                ];
+
+                var interpreter = new LatexInterpreter(latex, "test.tex"),
+                    blocks      = interpreter.blocks;
+
+                assert.strictEqual(blocks.length, 7);
+                assert.strictEqual(blocks[0].content, "\\textbf{foo}");
+                assert.strictEqual(blocks[1].type, "subsubsection");
+
+                assert.strictEqual(blocks[5].start, 8);
+                assert.strictEqual(blocks[5].end, 11);
+            });
+
+        </script>
+    </body>
+</html>

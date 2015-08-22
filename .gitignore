@@ -1,0 +1,4 @@
+node_modules/
+dist/
+test/testfiles/*
+!test/testfiles/testfiles.js
