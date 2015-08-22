@@ -12,3 +12,22 @@ function Something(file, line, block, result) {
     this.block  = block;
     this.result = result;
 }
+
+/**
+ * Compare this thing to something different
+ * 
+ * @param  {Something} otherThing The other thing
+ * @return {bool}                 Whether both things are equal
+ */
+Something.prototype.equals = function (otherThing) {
+    if (otherThing instanceof Something) {
+        var equalFile   = this.file === otherThing.file,
+            equalLine   = this.line === otherThing.line,
+            equalBlock  = this.block.equals(otherThing.block),
+            equalResult = this.result === otherThing.result;
+
+        return equalFile && equalLine && equalBlock && equalResult;
+    } else {
+        return false;
+    }
+};

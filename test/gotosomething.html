@@ -9,18 +9,18 @@
         <script src="testfiles/testfiles.js"></script>
         <script>
 
-            QUnit.test("GotoSomething - new SearchPattern()", function (assert) {
+            QUnit.test("GotoSomething - SearchPattern", function (assert) {
                 var pattern1 = new SearchPattern("abc@def");
-                assert.strictEqual("abc", pattern1.filter);
-                assert.strictEqual("def", pattern1.pattern);
+                assert.strictEqual(pattern1.filter, "abc");
+                assert.strictEqual(pattern1.pattern, "def");
 
                 var pattern2 = new SearchPattern("def");
-                assert.strictEqual("", pattern2.filter);
-                assert.strictEqual("def", pattern2.pattern);
+                assert.strictEqual(pattern2.filter, "");
+                assert.strictEqual(pattern2.pattern, "def");
 
                 var pattern3 = new SearchPattern("@");
-                assert.strictEqual("", pattern3.filter);
-                assert.strictEqual("", pattern3.pattern);
+                assert.strictEqual(pattern3.filter, "");
+                assert.strictEqual(pattern3.pattern, "");
             });
 
             QUnit.test("GotoSomething - full search", function (assert) {
@@ -31,6 +31,7 @@
 
                 assert.strictEqual(result.length, 3);
                 assert.strictEqual(result[1].line, 8);
+                assert.ok(result[2].block instanceof UnknownBlock);
             });
 
         </script>

@@ -1,8 +1,8 @@
 /**
- * Wrapper for static RegExp pattern
+ * Latex RegExp Pattern Enum
  */
 var LatexPattern = {
-    block: /\\(chapter|(sub)*section|paragraph)\{(.*)\}/,
-    comment: /(%.*)/,
-    newLineShortcut: /\\{2}/
+    BLOCK: /\\(chapter|(sub)*section|paragraph)\{(.*)\}/,
+    COMMENT: /(%.*)/,
+    NEWLINESHORTCUT: /\\{2}/
 };

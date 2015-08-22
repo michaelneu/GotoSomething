@@ -11,11 +11,11 @@ function LatexInterpreter(lines, filename) {
         var line = lines[line_number];
 
         // strip comments
-        line = line.replace(LatexPattern.comment, "");
+        line = line.replace(LatexPattern.COMMENT, "");
         // strip new-line-shortcuts
-        line = line.replace(LatexPattern.newLineShortcut, "");
+        line = line.replace(LatexPattern.NEWLINESHORTCUT, "");
 
-        var bigBlockMatch = LatexPattern.block.exec(line);
+        var bigBlockMatch = LatexPattern.BLOCK.exec(line);
 
         if (bigBlockMatch !== null) {
             var fullBigBlock = bigBlockMatch[0];

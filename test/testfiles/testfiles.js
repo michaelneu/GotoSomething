@@ -6,5 +6,5 @@ window.files = [
     {
         "content": "% \\chapter{dead chapter} should not appear\n\nalso i'm looking for this (previous file)\n\n\\chapter{3}\n    % \\subsection{3.1}\n        and this\n\n\\chapter{4}\n",
         "name": "02.tex"
-    } 
+    }
 ];

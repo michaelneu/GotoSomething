@@ -4,7 +4,9 @@
  * @param {object} files A file array
  */
 function GotoSomething(files) {
-    this.files = files;
+    this.files = files.map(function (element) {
+        return new File(element);
+    });
 }
 
 /**
@@ -17,10 +19,8 @@ GotoSomething.prototype.find = function (pattern) {
     var result = [],
         pattern = new SearchPattern(pattern);
 
-    var currentBlock = null;
-
     this.files.forEach(function (file) {
-        var lines    = file.content.replace("\r", "").split("\n");
+        var lines = file.readLines();
 
         // parse the blocks
         var latex  = new LatexInterpreter(lines, file.name),
@@ -39,24 +39,23 @@ GotoSomething.prototype.find = function (pattern) {
             return range;
         });
 
-        // if the block we're currently in matches the filter append it to the ranges
-        if (currentBlock !== null && currentBlock.content.containsCharacters(pattern.filter)) {
-            var firstBlockStart = -1;
 
-            if (blocks.length > 0) {
-                firstBlockStart = blocks[0].start;
-            }
+        // if the first block isn't on line 1, then there's an unknown block before
+        // add this block to the search ranges as it might be part of some other block
+        var firstBlockStart = -1;
 
-            // but only if the first new block isn't in the first line (= current block empty)
-            if (firstBlockStart !== 0 || firstBlockStart === -1) {
-                var range = {
-                    start: 0,
-                    end: firstBlockStart,
-                    block: currentBlock
-                };
+        if (blocks.length > 0) {
+            firstBlockStart = blocks[0].start;
+        }
+        
+        if (firstBlockStart !== 0 || firstBlockStart === -1) {
+            var range = {
+                start: 0,
+                end: firstBlockStart,
+                block: new UnknownBlock(file.filename)
+            };
 
-                rangesToLookIn.unshift(range);
-            }
+            rangesToLookIn.unshift(range);
         }
 
         // walk through the ranges and look for the pattern
@@ -65,18 +64,14 @@ GotoSomething.prototype.find = function (pattern) {
                 var line = lines[i];
 
                 if (line.containsCharacters(pattern.pattern)) {
-                    var something = new Something(file.name, i, range.block, line);
+                    var something = new Something(file.filename, i, range.block, line);
                     result.push(something);
                 }
             }
         });
-
-        // remember the current block
-        var lastBlock = blocks.last();
-        if (lastBlock !== null) {
-            currentBlock = lastBlock;
-        }
     });
+
+    result.unique();
 
     return result;
 };

@@ -6,9 +6,10 @@
         <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
 
         <script src="../../dist/goto-something.js"></script>
+        <script src="../testfiles/testfiles.js"></script>
         <script>
 
-            QUnit.test("Latex - new LatexInterpreter()", function (assert) {
+            QUnit.test("Latex - LatexInterpreter", function (assert) {
                 var latex = [
                     // (somewhat) valid latex
                     "\\chapter{\\textbf{foo}} }",                     // the trailing "}" should be stripped
