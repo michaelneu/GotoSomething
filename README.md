@@ -24,7 +24,7 @@ var goto = new GotoSometing(files);
 // find all results of "influence" in a chapter like "thermodynamics"
 var results = goto.find("thermodynamics@influence");
 
-//
+// go through all found places
 results.forEach(function (something) {
     // output the matched result
     console.log(something.result);

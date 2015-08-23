@@ -8,7 +8,10 @@ var qunit  = require("gulp-qunit");
 
 var SRC = {
     JS: "src/**/*.js",
-    TEST: "test/**/*.html"
+    TEST: {
+        QUNIT: "test/**/*.html",
+        UNITS: "test/**/*.js"
+    }
 };
 
 var DEST = {
@@ -25,7 +28,7 @@ gulp.task("build", function () {
 });
 
 gulp.task("test", function () {
-    gulp.src(SRC.TEST)
+    gulp.src(SRC.TEST.QUNIT)
         .pipe(qunit().on("error", function () { } ));
 });
 
@@ -33,5 +36,5 @@ gulp.task("default", ["build", "test"]);
 
 gulp.task("watch", ["build"], function () {
     gulp.watch(SRC.JS, ["default"]);
-    gulp.watch(SRC.TEST, ["test"]);
+    gulp.watch([SRC.TEST.QUNIT, SRC.TEST.UNITS], ["test"]);
 });
