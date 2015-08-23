@@ -8,11 +8,45 @@ function Block(latexBlock, start, filename) {
     var match = LatexPattern.BLOCK.exec(latexBlock);
 
     this.type     = match[1];
-    this.content  = match[3];
+    this.content  = match[4];
     this.filename = filename;
     this.start    = start;
     this.end      = -1;
 }
+
+/**
+ * Enum for sorting blocks
+ */
+Block.Order = {
+    CHAPTER: 5,
+    SECTION: 4,
+    SUBSECTION: 3,
+    SUBSUBSECTION: 2,
+    PARAGRAPH: 1,
+    SUBPARAGRAPH: 0,
+
+    fromType: function (type) {
+        switch (type) {
+            case "chapter":
+                return Block.Order.CHAPTER;
+
+            case "section":
+                return Block.Order.SECTION;
+
+            case "subsection":
+                return Block.Order.SUBSECTION;
+
+            case "subsubsection":
+                return Block.Order.SUBSUBSECTION;
+
+            case "paragraph":
+                return Block.Order.PARAGRAPH;
+
+            case "SUBPARAGRAPH":
+                return Block.Order.SUBPARAGRAPH;
+        }
+    }
+};
 
 /**
  * Compare this block to another block
@@ -36,7 +70,7 @@ Block.prototype.equals = function (otherBlock) {
 
 /**
  * Represents an unknown ToC block in Latex
- * 
+ *
  * @param {string} filename The file that contains the block
  */
 function UnknownBlock(filename) {

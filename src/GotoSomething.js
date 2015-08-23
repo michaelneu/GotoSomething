@@ -26,9 +26,12 @@ GotoSomething.prototype.find = function (pattern) {
         var latex  = new LatexInterpreter(lines, file.name),
             blocks = latex.blocks;
 
+        // find all matching blocks and sub-blocks
         var matchingBlocks = blocks.filter(function (element) {
             return element.content.containsCharacters(pattern.filter);
         });
+
+        // reduce the blocks to ranges
         var rangesToLookIn = matchingBlocks.map(function (element) {
             var range = {
                 start: element.start,
@@ -47,7 +50,7 @@ GotoSomething.prototype.find = function (pattern) {
         if (blocks.length > 0) {
             firstBlockStart = blocks[0].start;
         }
-        
+
         if (firstBlockStart !== 0 || firstBlockStart === -1) {
             var range = {
                 start: 0,
@@ -64,7 +67,7 @@ GotoSomething.prototype.find = function (pattern) {
                 var line = lines[i];
 
                 if (line.containsCharacters(pattern.pattern)) {
-                    var something = new Something(file.filename, i, range.block, line);
+                    var something = new Something(i, range.block, line);
                     result.push(something);
                 }
             }

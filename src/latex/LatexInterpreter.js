@@ -57,6 +57,39 @@ function LatexInterpreter(lines, filename) {
         }
     }
 
+    // set the correct end to blocks if they contain sub blocks (e.g. chapter > section > subsection)
+    var blockChain = [];
+    blocks.forEach(function (element) {
+        var lastBlock = blockChain.pop();
+
+        if (lastBlock === undefined) {
+            blockChain.push(element);
+        } else {
+            var orderLastBlock = Block.Order.fromType(lastBlock.type),
+                orderElement   = Block.Order.fromType(element.type);
+
+            if (orderElement >= orderLastBlock) {
+                // the lastBlock is deeper than the element --> go up the chain and set the endings
+                while (orderElement >= orderLastBlock) {
+                    lastBlock.end = element.start;
+
+                    lastBlock = blockChain.pop();
+                    if (lastBlock !== undefined) {
+                        orderLastBlock = Block.Order.fromType(lastBlock.type);
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                // element is deeper nested than lastBlock --> keep both
+                blockChain.push(lastBlock);
+            }
+
+            blockChain.push(element);
+        }
+    });
+
+    // set the end of the last block
     var lastBlock = blocks.last();
     if (lastBlock !== null) {
         lastBlock.end = lines.length;
