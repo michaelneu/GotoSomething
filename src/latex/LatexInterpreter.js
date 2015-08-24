@@ -7,9 +7,7 @@ function LatexInterpreter(lines, filename) {
     var blocks     = [],
         blockStart = 0;
 
-    for (var line_number = 0; line_number < lines.length; line_number++) {
-        var line = lines[line_number];
-
+    lines.forEach(function (line, line_number) {
         // strip comments
         line = line.replace(LatexPattern.COMMENT, "");
         // strip new-line-shortcuts
@@ -55,7 +53,7 @@ function LatexInterpreter(lines, filename) {
                 }
             }
         }
-    }
+    });
 
     // set the correct end to blocks if they contain sub blocks (e.g. chapter > section > subsection)
     var blockChain = [];

@@ -6,7 +6,6 @@
 function File(file) {
     this.filename = file.name;
     this.content  = file.content.replace("\r", "");
-    this.basename = file.name.split("/").last();
 }
 
 /**
@@ -24,5 +23,11 @@ File.prototype.read = function () {
  * @return {array} The lines of the file
  */
 File.prototype.readLines = function () {
-    return this.read().split("\n");
+    var content = this.read();
+
+    if (content !== null && content !== undefined) {
+        return content.split("\n");
+    } else {
+        return [];
+    }
 };
